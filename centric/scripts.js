@@ -4,46 +4,44 @@ var ctx = canvas.getContext('2d');
 var canvasWidth = canvas.width = window.innerWidth;
 var canvasHeight = canvas.height = window.innerHeight;
 
-var x = 0;
-var y = 0;
 
-var speed = 1;
-
-var squareWidth = 10;
-var squareHeight = 10;
-
-var circleCenterX = 245;
-var circleCenterY = 245;
-
-var radius = 150;
-var angle = 360;
+var squareProps = {
+    width: 10,
+    height: 10,
+    path: {
+        speed: 1,
+        radius: 150,
+        angle: 360,
+        xPos: 0,
+        yPos: 0,
+        xCenter: 245,
+        yCenter: 245
+    }
+}
 
 function animate() {
     ctx.clearRect(0, 0, canvasWidth, canvasHeight);
 
-    var newX = radius * Math.cos(angle * (Math.PI/180));
-    var newY = radius * Math.sin(angle * (Math.PI/180));
+    var newX = squareProps.path.radius * Math.cos(squareProps.path.angle * (Math.PI/180));
+    var newY = squareProps.path.radius * Math.sin(squareProps.path.angle * (Math.PI/180));
 
-    x = newX + circleCenterX;
-    y = newY + circleCenterY;
+    squareProps.path.xPos = newX + squareProps.path.xCenter;
+    squareProps.path.yPos = newY + squareProps.path.yCenter;
 
-    ctx.fillRect(x, y, squareWidth, squareHeight);
+    ctx.fillRect(
+        squareProps.path.xPos, 
+        squareProps.path.yPos, 
+        squareProps.width, 
+        squareProps.height
+    );
 
-    angle += speed;
+    squareProps.path.angle += squareProps.path.speed;
     window.requestAnimationFrame(animate);
 
     ctx.beginPath();
     ctx.arc(250, 250, 150, 0, Math.PI * 2, false);
     ctx.stroke();
 
-
-    // ctx.clearPath();
-
-    ctx.beginPath();
-    ctx.arc(50, 50, 10, 0, Math.PI * 2, false);
-    ctx.stroke();
-    ctx.fillStyle = '#000';
-    ctx.fill();
 
 }
 
