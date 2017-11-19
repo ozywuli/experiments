@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+}
+</style>
+
+</head>
+<body>
+
+<canvas class="canvas"></canvas>
+
+
+<script>
+
+var canvas = document.getElementsByClassName('canvas')[0];
+var ctx = canvas.getContext('2d');
+
+var canvasWidth = canvas.width = window.innerWidth;
+var canvasHeight = canvas.height = window.innerHeight;
+
+var x = 0;
+var y = 0;
+
+var speed = 1;
+
+var squareWidth = 10;
+var squareHeight = 10;
+
+var circleCenterX = 450;
+var circleCenterY = 450;
+
+var radius = 100;
+var angle = 360;
+
+function animate() {
+    ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+
+    var newX = radius * Math.cos(angle * (Math.PI/180));
+    var newY = radius * Math.sin(angle * (Math.PI/180));
+
+    x = newX + circleCenterX;
+    y = newY + circleCenterY;
+
+    ctx.fillRect(x, y, squareWidth, squareHeight);
+
+    angle += speed;
+
+    window.requestAnimationFrame(animate);
+
+}
+
+animate();
+
+
+</script>
+
+</body>
+</html>

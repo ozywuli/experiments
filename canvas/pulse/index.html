@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Canvas Pulse</title>
+
+<style>
+body {
+    background: black;
+}
+
+canvas {
+    background: black;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+</style>
+
+</head>
+<body>
+
+<!-- https://codepen.io/robin-dela/pen/XNLVMy?q=canvas%20pulse&order=popularity&depth=everything&show_forks=false -->
+
+<canvas id="canvas"></canvas>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.19.0/TweenMax.min.js"></script>
+<script>
+
+var canvas = document.getElementById('canvas');
+var ctx = canvas.getContext('2d');
+
+
+canvas.width = 1024;
+canvas.height = 1024;
+
+function Circle() {
+    this.params = {
+        alpha: 0,
+        delay: 0,
+        radius: 60
+    };
+
+
+
+    new TimelineMax({
+        repeat: -1,
+        // ease: Power4.easeOut
+    })
+        .to(this.params, 1, {
+            alpha: 1
+        })
+        .to(this.params, 1, {
+            alpha: 0
+        })
+
+}
+
+Circle.prototype.update = function() {
+    ctx.beginPath();
+    ctx.arc(canvas.height / 2, canvas.height / 2, this.params.radius, 0, Math.PI * 2, true);
+    ctx.fillStyle = 'rgba(255, 255, 255,' + this.params.alpha + ')';
+    ctx.fill();
+};
+
+
+var circle = new Circle();
+
+
+function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    circle.update();
+
+
+    ctx.beginPath();
+    ctx.arc(canvas.height / 2, canvas.height / 2, 20, 0, Math.PI * 2);
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+    ctx.fill();
+
+
+    requestAnimationFrame(draw);
+}
+
+draw();
+
+</script>
+
+
+</body>
+</html>

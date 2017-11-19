@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+}
+
+#canvas {
+    background: #000;
+}
+
+</style>
+
+</head>
+<body>
+
+<canvas id="canvas" width="400" height="400"></canvas>
+
+<script>
+var canvas = document.getElementById('canvas');
+var ctx = canvas.getContext('2d');
+
+ctx.fillStyle = 'red';
+ctx.fillRect(2, 2, 1, 1);
+
+
+
+
+var imageData = ctx.getImageData(0, 0, 5, 5);
+var imageDataData = imageData.data;
+
+
+console.log(imageData);
+console.log(imageDataData);
+
+
+var position;
+var positions = [];
+
+for (var i = 0; i < imageDataData.length; i += 4 ) {
+    if ( imageDataData[i-4] === 255 ) {
+        // http://stackoverflow.com/questions/13660723/get-x-and-y-pixel-coordinates-when-iterating-over-html5-canvas-getimagedata
+        position = {
+            x: (i-4) / 4 % 5,
+            y: (i-4) / 4 % 5
+        }
+
+        positions.push(position);
+    }
+}
+
+console.log(positions);
+
+
+</script>
+    
+</body>
+</html>

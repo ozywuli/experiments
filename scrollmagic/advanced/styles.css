@@ -1,0 +1,249 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: sans-serif;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+}
+
+
+
+.panel {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.trigger {
+    position: absolute;
+}
+
+.box-wrapper {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate3d(-50%, -50%, 0);
+}
+
+.box {
+    position: relative;
+    width: 150px;
+    height: 150px;
+}
+
+.box-1 {
+    background: red;
+    transition: transform 0.3s ease-out;
+}
+.trigger1 {
+    top: 30%;
+}
+
+.zap {
+    transform: scale(2.5, 0);
+}
+
+
+.box-2 {
+    background: green;
+    transition: all 500ms ease;
+}
+
+.trigger2 {
+    top: 30%;
+}
+
+
+.trigger3 {
+    top: 0;
+}
+
+.box-3 {
+    background: orange;
+}
+
+
+.trigger4 {
+    top: 0;
+}
+
+.box-4 {
+    background: red;
+}
+
+
+.trigger5 {
+    top: 50%;
+}
+
+.box-5 {
+    background: teal;
+}
+
+.fish {
+    min-width: 500px;
+}
+
+.trigger6 {
+    top: 30%;
+}
+
+.box-row {
+    position: relative;
+    display: inline-block;
+    background: #000;
+    width: 25px;
+    height: 25px;
+    left: 700px;
+}
+
+.subpanel {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+}
+    .subpanel.mod-blue {
+        background: blue;
+        z-index: 1;
+    }
+
+    .subpanel.mod-turquoise {
+        background: turquoise;
+        z-index: 2;
+    }
+
+    .subpanel.mod-green {
+        background: green;
+        z-index: 3;
+    }
+
+    .subpanel.mod-palegreen {
+        background: palegreen;
+        z-index: 4;
+    }
+
+
+/* Scene 8 */
+.panel8 {
+    -webkit-perspective: 1000;
+    perspective: 1000;
+}
+
+.slidepanelContainer {
+    width: 400%;
+    height: 100%;
+}
+
+.slidepanel {
+    width: 25%;
+    height: 100%;
+    float: left;
+}
+
+.slidepanel.mod-red {
+    background: red;
+}
+
+.slidepanel.mod-green {
+    background: green;
+}
+
+.slidepanel.mod-blue {
+    background: blue;
+}
+
+.slidepanel.mod-red {
+    background: red;
+}
+
+
+
+/* Scene 10 */
+.box10 {
+    background: teal;
+}
+
+.anchor-menu {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 10;
+    width: 200px;
+    background: gray;
+}
+
+.anchor-target {
+    position: absolute;
+    left: 0;
+}
+
+#top {
+    top: 0;
+}
+
+#middle {
+    top: 50%;
+}
+
+#bottom {
+    top: 100%;
+}
+
+
+/* Scene 11 */
+.horizontal-scroll {
+    width: auto;
+    height: 100%;
+/*    overflow-x: scroll;
+    overflow-y: hidden;*/
+    white-space: nowrap;
+}
+
+.horizontalPanel {
+    min-width: 100%;
+    height: 100%;
+    display: inline-block;
+}
+
+.horizontalWrapper {
+    width: 900px;
+    height: 500px;
+    position: relative;
+}
+
+.horizontalLayer {
+    width: 100%;
+    height: 100%;
+}
+
+.horizontalLayer1 {
+    background-image: url('example_parallax_l1.gif');
+}
+
+.horizontalLayer2 {
+    background-image: url('example_parallax_l2.png');
+    position: absolute;
+    height: 139px;
+    width: 100%;
+    bottom: 32px;
+}
+
+.horizontalLayer3 {
+    background-image: url('example_parallax_l3.gif');
+    position: absolute;
+    height: 32px;
+    width: 100%;
+    bottom: 0px;
+}
+
+.spacer {
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+}
+

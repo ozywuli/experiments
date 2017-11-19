@@ -1,0 +1,9 @@
+body {
+    background-color:#000
+}
+button {
+    position:absolute;top:0px;left:220px;width:80px;height:62px
+}
+#txt {
+    position:absolute;top:0px;left:0px;height:57px;width:215px
+}

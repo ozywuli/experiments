@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Star Twinkle</title>
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+    }
+    html, body {
+        background: #000019;
+        width: 100%;
+        height: 100%;
+    }
+
+    #canvas {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+    }
+</style>
+
+</head>
+<body>
+
+<canvas id="canvas"></canvas>
+<canvas id="canvas2"></canvas>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.19.0/TweenMax.min.js"></script>
+<script>
+var canvas = document.getElementById('canvas');
+var ctx = canvas.getContext('2d');
+
+var canvas2 = document.getElementById('canvas2');
+var ctx2 = canvas2.getContext('2d');
+
+
+var canvasWidth = canvas.width = canvas2.width = window.innerWidth;
+var canvasHeight = canvas.height = canvas2.height = window.innerHeight;
+
+
+function Star() {
+    this.params = {
+        alpha: 0,
+        delay: 0,
+        radius: 2
+    }
+
+    new TimelineMax({
+        repeat: -1
+    })
+        .to(this.params, 1, {
+            alpha: 1
+        })
+        .to(this.params, 1, {
+            alpha: 0
+        })
+}
+
+Star.prototype.update = function() {
+    ctx.beginPath();
+    ctx.arc(canvasWidth / 2, canvasHeight / 2, this.params.radius, 0, Math.PI * 2, true);
+    ctx.fillStyle = 'rgba(255, 255, 255, ' + this.params.alpha + ')';
+    ctx.fill();
+}
+
+var star = new Star();
+
+function Glow() {
+    this.params = {
+        alpha: 0,
+        delay: 0,
+        radius: 4
+    }
+
+    new TimelineMax({
+        repeat: -1
+    })
+        .to(this.params, 1, {
+            alpha: 1
+        })
+        .to(this.params, 1, {
+            alpha: 0
+        })
+}
+
+Glow.prototype.update = function() {
+    ctx2.beginPath();
+    ctx2.arc(canvasWidth / 2, canvasHeight / 2, this.params.radius, 0, Math.PI * 2, true);
+    ctx2.fillStyle = 'rgba(255, 255, 255, ' + this.params.alpha + ')';
+    ctx2.fill();
+}
+
+var glow = new Glow();
+
+function draw() {
+    ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+    ctx2.clearRect(0, 0, canvasWidth, canvasHeight);
+    star.update();
+    glow.update();
+
+    requestAnimationFrame(draw);
+}
+
+draw();
+
+
+canvas2.style.webkitFilter = "blur(4px)";
+
+</script>
+
+
+</body>
+</html>

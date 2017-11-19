@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+
+<style>
+canvas {
+    border: 1px solid black;   
+}
+</style>
+
+</head>
+<body onload="draw();">
+
+<canvas id="canvas"
+    width="150"
+    height="150"
+></canvas>
+
+<canvas id="paths"
+    width="150"
+    height="150"
+></canvas>
+
+<canvas id="smile"
+    width="150"
+    height="150"
+></canvas>
+
+<script>
+function draw() {
+
+    /*
+     * Rectangle
+     */
+    var canvas = document.getElementById("canvas")
+    var ctx = canvas.getContext('2d');
+
+    ctx.fillRect(25, 25, 100, 100);
+    ctx.clearRect(45, 45, 60, 60);
+    ctx.strokeRect(50, 50, 50, 50);
+
+    /*
+     * Paths
+     */
+    var path = document.getElementById('paths');
+    var pathCtx = path.getContext('2d');
+
+    pathCtx.beginPath();
+    pathCtx.moveTo(50, 50);
+    pathCtx.lineTo(120, 75);
+    pathCtx.lineTo(100, 25);
+    pathCtx.fill();
+
+
+    /*
+     * Smile
+     */
+    var smile = document.getElementById('smile');
+    var smileCtx = smile.getContext('2d');
+
+    smileCtx.beginPath();
+    smileCtx.arc(75, 75, 50, 0, Math.PI * 2, true); // Outer circle
+    smileCtx.moveTo(110, 75);
+
+    smileCtx.arc(75, 75, 35, 0, Math.PI, false) // Mouse (clockwise)
+    smileCtx.moveTo(65, 65);
+
+    smileCtx.arc(60, 65, 5, 0, Math.PI * 2, true) // Left eye
+    smileCtx.moveTo(95, 65);
+
+    smileCtx.arc(90, 65, 5, 0, Math.PI * 2, true);
+
+    smileCtx.stroke();
+}
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+
+<canvas width="500" height="500"></canvas>
+
+
+<script>
+
+var canvas = document.querySelector("canvas");
+var ctx = canvas.getContext("2d");
+var rects = [
+    {x: 10, y: 10, w: 200, h: 50},
+    {x: 50, y: 70, w: 150, h: 30}    // etc.
+]; 
+var i = 0; 
+var r;
+
+// render initial rects.
+while (r = rects[i++]) {
+    console.log(r);
+    ctx.rect(r.x, r.y, r.w, r.h)
+}
+ctx.fillStyle = "blue"; ctx.fill();
+
+canvas.onmousemove = highlight;
+
+function highlight(e) {
+    // important: correct mouse position:
+    var rect = this.getBoundingClientRect();
+    var x = e.clientX - rect.left;
+    var y = e.clientY - rect.top;
+    var i = 0; 
+    var r;
+  
+    ctx.clearRect(0, 0, canvas.width, canvas.height); // for demo
+
+    while (r = rects[i++]) {
+        // add a single rect to path:
+        ctx.beginPath();
+        ctx.rect(r.x, r.y, r.w, r.h);
+
+        // check if we hover it, fill red, if not fill it blue
+        ctx.fillStyle = ctx.isPointInPath(x, y) ? "red" : "blue";
+        ctx.fill();
+    }
+
+}
+
+
+</script>
+
+</body>
+</html>

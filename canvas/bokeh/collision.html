@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+}
+canvas {
+    width: 100%;
+    height: 100%;
+    background: red;
+}
+</style>
+
+</head>
+<body>
+<canvas id="myCanvas"></canvas>
+
+
+<script>
+
+var canvas = document.getElementById('myCanvas');
+var ctx = canvas.getContext('2d');
+
+var canvasWidth = canvas.width = window.innerWidth;
+var canvasHeight = canvas.height = window.innerHeight;
+
+
+ctx.beginPath();
+ctx.fillRect(0, 0, 20, 20);
+
+var speedx = 2;
+var dx = 0;
+var bounced = false;
+
+function move() {
+    ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+
+    if (dx > canvasWidth - 20) {
+        speedx = -speedx;
+    } else {
+        speedx = +speedx;
+    }
+
+    dx += speedx;
+
+/*    if (x >= 0 && !bounced) {
+        x += 0.1;
+    }
+
+    if (x > canvasWidth / 8) {
+        bounced = true;
+    }
+
+    if (bounced) {
+        x -= 0.1;
+    }
+
+    if (x === 0 & bounced) {
+        bounced = false;
+    }*/
+
+
+    ctx.fillRect(dx, 0, 20, 20);
+    window.requestAnimationFrame(move);
+}
+move();
+
+</script>
+
+</body>
+</html>

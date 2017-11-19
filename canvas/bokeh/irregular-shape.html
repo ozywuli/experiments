@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+
+<style>
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+canvas {
+    width: 100%;
+    height: 100%;
+}
+
+</style>
+</head>
+<body>
+
+<canvas id="canvas"></canvas>
+
+
+
+<script>
+
+var canvas = document.getElementById('canvas');
+var ctx = canvas.getContext('2d');
+var canvasWidth = canvas.width = window.innerWidth;
+var canvasHeight = canvas.height = window.innerHeight;
+
+function drawShape(ctx, xoff, yoff, x, y) {
+  ctx.beginPath();
+
+  ctx.moveTo(210 + xoff + x, 232 + yoff + y);
+  ctx.bezierCurveTo(198 + xoff, 344 + yoff, 474 + xoff, 464 + yoff, 474 + xoff + x, 266 + yoff + y);
+  ctx.bezierCurveTo(474 + xoff, 174 + yoff, 425 + xoff, 135 + yoff, 337 + xoff - x, 133 + yoff - y);
+  ctx.bezierCurveTo(322 + xoff, 133 + yoff, 220 + xoff, 158 + yoff, 210 + xoff + x, 232 + yoff + y);
+
+  // ctx.moveTo(210 + xoff, 232 + yoff);
+  // ctx.bezierCurveTo(198 + xoff, 344 + yoff, 474 + xoff, 464 + yoff, 474 + xoff, 266 + yoff);
+  // ctx.bezierCurveTo(474 + xoff, 174 + yoff, 425 + xoff, 135 + yoff, 337 + xoff, 133 + yoff);
+  // ctx.bezierCurveTo(322 + xoff, 133 + yoff, 220 + xoff, 158 + yoff, 210 + xoff, 232 + yoff);
+
+  ctx.stroke();
+}
+drawShape(ctx, 100, 100, 0, 0);
+
+
+var speed = 2;
+
+var x = 0;
+var y = 0;
+
+var radius = 3;
+var angle = 0;
+
+function loop() {
+    ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+
+    var newX = radius * Math.cos(angle * (Math.PI/180));
+    var newY = radius * Math.sin(angle * (Math.PI/180));
+
+    x = newX;
+    y = newY;
+
+    drawShape(ctx, 100, 100, x, y);
+    angle += speed;
+    window.requestAnimationFrame(loop);
+}
+
+loop();
+
+
+</script>
+
+
+
+</body>
+</html>

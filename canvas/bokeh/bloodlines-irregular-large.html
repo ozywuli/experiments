@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+canvas {
+    width: 100%;
+    height: 100%;
+    background: #1b2127;
+    filter: blur(4px);
+}
+</style>
+
+</head>
+<body>
+
+<canvas id="canvas-bokeh" class="canvas-bokeh"></canvas>
+
+
+<script>
+
+var canvas = document.getElementById('canvas-bokeh');
+var canvasWidth = canvas.width = window.innerWidth;
+var canvasHeight = canvas.height = window.innerHeight;
+var ctx = canvas.getContext('2d');
+
+function rand(min, max) {
+    return Math.random() * (max - min) + min;
+}
+
+/*function drawShape(ctx, xoff, yoff) {
+  ctx.beginPath();
+  ctx.moveTo(276 + xoff, 67 + yoff);
+  ctx.bezierCurveTo(349 + xoff, 51 + yoff, 474 + xoff, 132 + yoff, 488 + xoff, 173 + yoff);
+  ctx.bezierCurveTo(510 + xoff, 237 + yoff, 480 + xoff, 390 + yoff, 434 + xoff, 417 + yoff);
+  ctx.bezierCurveTo(409 + xoff, 432 + yoff, 269 + xoff, 472 + yoff, 217 + xoff, 436 + yoff);
+  ctx.bezierCurveTo(169 + xoff, 403 + yoff, 94 + xoff, 334 + yoff, 109 + xoff, 248 + yoff);
+  ctx.bezierCurveTo(135 + xoff, 94 + yoff, 235 + xoff, 75 + yoff, 276 + xoff, 67 + yoff);
+  ctx.stroke();
+}
+*/
+// drawShape(ctx, 100, 100);
+
+/*function drawShape(ctx, xoff, yoff) {
+  ctx.beginPath();
+  ctx.moveTo(289 + xoff, 113 + yoff);
+  ctx.bezierCurveTo(362 + xoff, 97 + yoff, 471 + xoff, 181 + yoff, 489 + xoff, 220 + yoff);
+  ctx.bezierCurveTo(519 + xoff, 284 + yoff, 468 + xoff, 420 + yoff, 456 + xoff, 438 + yoff);
+  ctx.bezierCurveTo(440 + xoff, 462 + yoff, 332 + xoff, 507 + yoff, 280 + xoff, 471 + yoff);
+  ctx.bezierCurveTo(232 + xoff, 438 + yoff, 148 + xoff, 380 + yoff, 163 + xoff, 294 + yoff);
+  ctx.bezierCurveTo(189 + xoff, 140 + yoff, 253 + xoff, 120 + yoff, 288 + xoff, 114 + yoff);
+  ctx.stroke();
+}
+*/
+
+/**
+ * Black Blob
+ */
+function drawShape2(ctx, scale, xoff, yoff, dx, dy) {
+  ctx.beginPath();
+  ctx.moveTo( (289 * scale) + xoff, (113 * scale) + yoff);
+  ctx.bezierCurveTo( (362 * scale) + xoff,  ( 97 * scale) + yoff,  (471 * scale) + xoff,  (181 * scale) + yoff,  (489 * scale) + xoff + dx,  (220 * scale) + yoff + dy);
+  ctx.bezierCurveTo( (519 * scale) + xoff,  (284 * scale) + yoff,  (468 * scale) + xoff,  (420 * scale) + yoff,  (456 * scale) + xoff - dx,  (438 * scale) + yoff - dy);
+  ctx.bezierCurveTo( (440 * scale) + xoff,  (462 * scale) + yoff,  (332 * scale) + xoff,  (507 * scale) + yoff,  (280 * scale) + xoff,  (471 * scale) + yoff);
+  ctx.bezierCurveTo( (232 * scale) + xoff,  (438 * scale) + yoff,  (148 * scale) + xoff,  (380 * scale) + yoff,  (163 * scale) + xoff,  (294 * scale) + yoff);
+  ctx.bezierCurveTo( (189 * scale) + xoff,  (140 * scale) + yoff,  (253 * scale) + xoff,  (120 * scale) + yoff,  (288 * scale) + xoff,  (114 * scale) + yoff);
+  ctx.strokeStyle = 'transparent';
+  ctx.stroke();
+    ctx.fillStyle = 'rgba(36, 30, 30, 1)';
+  ctx.fill();
+  ctx.closePath();
+}
+drawShape2(ctx, 1.5, -450, 0);
+
+/**
+ * Transparent Blob
+ */
+function drawShape(ctx, scale, xoff, yoff, dx, dy) {
+  ctx.beginPath();
+  ctx.moveTo( (276 * scale) + xoff, (67 * scale) + yoff);
+  ctx.bezierCurveTo( (349 * scale) + xoff, ( 51 * scale) + yoff, (474 * scale) + xoff, (132 * scale) + yoff, (488 * scale) + xoff + dx, (173 * scale) + yoff + dy);
+  
+  ctx.bezierCurveTo( (510 * scale) + xoff, (237 * scale) + yoff, (480 * scale) + xoff, (390 * scale) + yoff, (434 * scale) + xoff - dx, (417 * scale) + yoff - dy);
+  ctx.bezierCurveTo( (409 * scale) + xoff, (432 * scale) + yoff, (269 * scale) + xoff, (472 * scale) + yoff, (217 * scale) + xoff, (436 * scale) + yoff);
+  
+  ctx.bezierCurveTo( (169 * scale) + xoff, (403 * scale) + yoff, (94  * scale) + xoff, (334 * scale) + yoff, (109 * scale) + xoff, (248 * scale) + yoff);
+  ctx.bezierCurveTo( (135 * scale) + xoff, ( 94 * scale) + yoff, (235 * scale) + xoff, (75  * scale) + yoff, (276 * scale) + xoff, (67  * scale) + yoff);
+  ctx.strokeStyle = 'transparent';
+  ctx.stroke();
+  ctx.fillStyle = 'rgba(28, 43, 48, 0.5)';
+  ctx.fill();
+  ctx.closePath();
+}
+
+drawShape(ctx, 1.5, -450, 0);
+
+
+/**
+ * Bokeh
+ */
+function drawBokeh(ctx, scale, xoff, yoff) {
+  ctx.beginPath();
+  ctx.moveTo((84 * scale) + xoff, (47 * scale) + yoff);
+  ctx.bezierCurveTo( (53  * scale) + xoff, (75  * scale) + yoff, (34  * scale) + xoff, (62  * scale) + yoff, (15  * scale) + xoff, (190 * scale) + yoff);
+  ctx.bezierCurveTo( (13  * scale) + xoff, (205 * scale) + yoff, (59  * scale) + xoff, (282 * scale) + yoff, (112 * scale) + xoff, (301 * scale) + yoff);
+  ctx.bezierCurveTo( (126 * scale) + xoff, (306 * scale) + yoff, (153 * scale) + xoff, (309 * scale) + yoff, (191 * scale) + xoff, (297 * scale) + yoff);
+  ctx.bezierCurveTo( (251 * scale) + xoff, (278 * scale) + yoff, (268 * scale) + xoff, (258 * scale) + yoff, (275 * scale) + xoff, (243 * scale) + yoff);
+  ctx.bezierCurveTo( (289 * scale) + xoff, (212 * scale) + yoff, (292 * scale) + xoff, (140 * scale) + yoff, (268 * scale) + xoff, (79  * scale) + yoff);
+  ctx.bezierCurveTo( (260 * scale) + xoff, (59  * scale) + yoff, (137 * scale) + xoff, (8   * scale) + yoff, (84  * scale) + xoff, (47  * scale) + yoff);
+  ctx.stroke();
+  ctx.fillStyle = 'rgba(34, 63, 71, 0.25)';
+  ctx.fill();
+  ctx.closePath();
+}
+
+
+
+/**
+ * Animation
+ */
+var animConfig = {
+    speed: 1,
+    dx: 0,
+    dy: 0,
+    radius: 5,
+    angle: 0
+}
+
+var animConfig2 = {
+    speed: 1,
+    dx: 0,
+    dy: 0,
+    radius: 10,
+    angle: 0
+}
+
+function animate() {
+    ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+
+    var newX = animConfig.radius * Math.cos(animConfig.angle * (Math.PI / 180));
+    var newY = animConfig.radius * Math.sin(animConfig.angle * (Math.PI / 180));
+
+    animConfig.dx = newX;
+    animConfig.dy = newY;
+
+    var newX2 = animConfig2.radius * Math.cos(animConfig2.angle * (Math.PI / 180));
+    var newY2 = animConfig2.radius * Math.sin(animConfig2.angle * (Math.PI / 180));
+
+    animConfig2.dx = newX2;
+    animConfig2.dy = newY2;
+
+    // console.log(newX);
+
+    drawShape2(ctx, 1.5, -450, -20, animConfig2.dx, animConfig2.dy);
+    drawShape(ctx, 1.5, -450, 0, animConfig.dx, animConfig.dy);
+
+
+    animConfig.angle += animConfig.speed;
+    animConfig2.angle += animConfig2.speed;
+
+    drawBokeh(ctx, 1.5, canvasWidth -400, canvasHeight -400);
+
+    window.requestAnimationFrame(animate);
+}
+
+animate();
+
+</script>
+
+
+
+</body>
+</html>

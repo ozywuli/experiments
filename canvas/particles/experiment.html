@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+
+<style>
+
+#img {
+    display: none;
+}
+
+</style>
+
+</head>
+<body>
+
+<canvas id="canvas" height="500" width="500"></canvas>
+
+<img src="http://placehold.it/150x150" alt="" id="img">
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.19.0/TweenMax.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.19.0/easing/EasePack.min.js"></script>
+
+<script>
+
+
+var canvas = document.getElementById('canvas');
+var ctx = canvas.getContext('2d');
+
+var empty = {
+    x: 0,
+    y: 0
+}
+
+TweenMax.to(
+    empty,
+    2,
+    {
+        x: Math.random() * 100,
+        y: Math.random() * 100,
+        ease: Circ.easeInOut,
+        onUpdate: draw
+    }
+)
+
+
+function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    ctx.globalCompositeOperation='destination-over';
+    ctx.beginPath();
+    ctx.arc(empty.x, empty.y, 10, Math.PI * 2, false);
+    ctx.fillStyle = 'red';
+    ctx.fill();
+
+
+    ctx.beginPath();
+    ctx.moveTo(0, 0);
+    ctx.lineTo(empty.x, empty.y);
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.moveTo(empty.x, empty.y);
+    ctx.lineTo(50, 300);
+    ctx.stroke();
+
+
+ctx.drawImage(document.getElementById('img'), 10, 10);
+
+}
+
+function debounce(func, wait, immediate) {
+    var timeout;
+    return function() {
+        var context = this, args = arguments;
+        var later = function() {
+            timeout = null;
+            if (!immediate) func.apply(context, args);
+        };
+        var callNow = immediate && !timeout;
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+        if (callNow) func.apply(context, args);
+    };
+};
+
+var myEfficientFn = debounce(function() {
+    // All the taxing stuff you do
+
+    TweenMax.to(
+        empty,
+        2,
+        {
+            x: (Math.random() * 500) + 1,
+            y: (Math.random() * 500) + 1,
+            ease: Circ.easeInOut,
+            onUpdate: draw
+        }
+    )
+
+}, 250);
+
+$('body').on('mousemove', myEfficientFn);
+
+
+
+
+
+
+</script>
+
+
+</body>
+</html>

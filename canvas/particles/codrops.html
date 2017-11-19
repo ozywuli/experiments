@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+
+<style>
+html, body {
+    background: #000;
+}
+</style>
+</head>
+<body>
+
+
+<div id="large-header" class="large-header">
+    <canvas id="demo-canvas"></canvas>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.19.0/TweenLite.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.19.0/easing/EasePack.min.js"></script>
+<script src="../../lib/rAF.js"></script>
+<script>
+
+(function() {
+
+    /*
+     * Declare global vars
+     */
+    var width;
+    var height; 
+    var largeHeader;
+    var canvas; 
+    var ctx; 
+    var points; 
+    var target; 
+    var animateHeader = true;
+
+    // Initialize Functions
+    initHeader();
+    initAnimation();
+    addListeners();
+
+    /*
+     * Init Functions
+     */
+
+    function initHeader() {
+
+        // width and height equal to the browser window
+        width = window.innerWidth;
+        height = window.innerHeight;
+
+        // set initial target (view area) to the center of the screen
+        target = {
+            x: width / 2, 
+            y: height / 2
+        };
+
+        // Select the `large-header` element and get its height
+        largeHeader = document.getElementById('large-header');
+        largeHeader.style.height = height + 'px';
+
+        // get the canvas element, set its width and height equal to the width and height of the browser window, and set the canvas context to be 2d
+        canvas = document.getElementById('demo-canvas');
+        canvas.width = width;
+        canvas.height = height;
+        ctx = canvas.getContext('2d');
+
+        // create points and store them in the `points` array
+        points = [];
+        // number of points depends on the width and height of the window divided by an arbitrary number (the higher the number the more points)
+        // let's create 400 points
+        for ( var x = 0; x < width; (x = x + width / 5) ) {
+            for ( var y = 0; y < height; (y = y + height / 5) ) {
+
+                // x position of a `point`
+                var pX = x + Math.random() * width / 5;
+                // y position of a point
+                var pY = y + Math.random() * height / 5;
+                
+                // the x and y properties of a `point`
+                var point = {
+                    x: pX, 
+                    originX: pX, 
+                    y: pY, 
+                    originY: pY 
+                };
+
+                // store each point in the `points` array
+                points.push(point);
+            }
+        }
+
+        // for each `point` find the 5 closest points
+        // loop through each point
+        for (var i = 0; i < points.length; i++) {
+
+            // closets points will be stored in an array
+            var closest = [];
+
+            // the base point
+            var p1 = points[i];
+
+            // after a base point is assigned, loop through each point again
+            for (var j = 0; j < points.length; j++) {
+
+                // assign a comparison point
+                var p2 = points[j];
+
+                // opposite of if the base point is unequal to the comparison point
+                if (!(p1 == p2)) {
+                    var placed = false;
+                    
+                    for (var k = 0; k < 5; k++) {
+
+                        // if placed is false
+                        if (!placed) {
+                            // if a spot in the `closest` array is empty
+                            if (closest[k] === undefined) {
+                                // then assign it a comparison point
+                                closest[k] = p2;
+
+                                // reset the loop
+                                placed = true;
+                            }
+                        }
+
+                    }
+
+                    for (var k = 0; k < 5; k++) {
+                        if (!placed) {
+                            // if the distance between `p1` and `p2` is less than than the distance between `p1` and a point stored in the `closest` array, then assign a spot in the array to the `p2` comparison point
+                            if ( getDistance(p1, p2) < getDistance(p1, closest[k]) ) {
+                                closest[k] = p2;
+
+                                // reset the loop
+                                placed = true;
+                            }
+                        }
+                    }
+
+                } // end if !(p1 == p2)
+            } // end for var j
+
+            // for each base point, assign it the 5 closest points from the `closest` array)
+            p1.closest = closest;
+        } // end for var i
+
+        // assign a circle to each point
+        for (var i in points) {
+            // The Circle constructor function takes three rguments
+            var circle = new Circle(
+                // 1. a point pos
+                points[i],
+                // 2. a random radius (min value: 2) and (max value: 4)
+                2 + Math.random() * 2, 
+                // color of the circle (but this doesn't do anything)
+                'rgba(255, 255, 255, 0.3)'
+            );
+
+            // assign the `circle` object as a property of a `point`
+            points[i].circle = circle;
+        }
+    } // end initHeader
+
+
+    /*
+     * Animation
+     */
+    function initAnimation() {
+        // 
+        animate();
+
+        // Loop through each point and it as the selector to shiftPoint
+        for (var i in points) {
+            shiftPoint(points[i]);
+        }
+    }
+
+    function animate() {
+        if (animateHeader) {
+
+            // Clear the canvas and set it equal in size to the width and height of the browser window
+            ctx.clearRect(0, 0, width, height);
+
+            // loop through points
+            for (var i in points) {
+
+                // detect points in range and highlight them
+                if ( Math.abs(getDistance(target, points[i])) < 4000 ) {
+                    points[i].active = 0.3;
+                    points[i].circle.active = 0.6;
+                } 
+                else if ( Math.abs(getDistance(target, points[i])) < 20000 ) {
+                    points[i].active = 0.1;
+                    points[i].circle.active = 0.3;
+                } 
+                else if ( Math.abs(getDistance(target, points[i])) < 40000 ) {
+                    points[i].active = 0.02;
+                    points[i].circle.active = 0.1;
+                } 
+                else {
+                    points[i].active = 0;
+                    points[i].circle.active = 0;
+                }
+
+                drawLines(points[i]);
+            }
+        }
+        requestAnimationFrame(animate);
+    }
+
+    // Do the weird random jerky movement
+    function shiftPoint(point) {
+        TweenLite.to(
+            // the selector
+            point, 
+            1 + 1 * Math.random(), 
+            {
+                x: point.originX - 50 + Math.random() * 100,
+                y: point.originY - 50 + Math.random() * 100, 
+                ease: Circ.easeInOut,
+                onComplete: function() {
+                    shiftPoint(point);
+                }
+            }
+        );
+    }
+
+    console.log(points[0]);
+
+    // Canvas manipulation
+    function drawLines(point) {
+
+        // If points aren't active then don't draw lines
+        if (!point.active) {
+            return;
+        }
+        // Draw lines between points
+        for (var i in point.closest) {
+            ctx.beginPath();
+            ctx.moveTo(point.x, point.y);
+            ctx.lineTo(point.closest[i].x, point.closest[i].y);
+            ctx.strokeStyle = 'rgba(256, 217, 249, '+ point.active + ')';
+            ctx.stroke();
+        }
+    }
+
+    // Circle shape constructor
+    function Circle(pos, rad, color) {
+        var _this = this;
+
+        // constructor
+        (function() {
+            _this.pos = pos || null;
+            _this.radius = rad || null;
+            _this.color = color || null;
+        })();
+
+        this.draw = function() {
+            // If points aren't active then don't draw circles
+            if(!_this.active) {
+                return;
+            }
+            ctx.beginPath();
+            ctx.arc(_this.pos.x, _this.pos.y, _this.radius, 0, Math.PI * 2, false);
+            ctx.fillStyle = 'rgba(156, 217, 249, '+ _this.active + ')';
+            ctx.fill();
+        };
+    }
+
+
+    /*
+     * Event handling
+     */
+    function addListeners() {
+        // If not a touch device, then enable mousemove event
+        if( !('ontouchstart' in window) ) {
+            window.addEventListener('mousemove', mouseMove);
+        }
+        // enable scroll event
+        window.addEventListener('scroll', scrollCheck);
+        // enable resize event
+        window.addEventListener('resize', resize);
+    }
+
+    function mouseMove(e) {
+        var posX = posY = 0;
+        if (e.pageX || e.pageY) {
+            posX = e.pageX;
+            posY = e.pageY;
+        }
+        else if (e.clientX || e.clientY)    {
+            posX = e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft;
+            posY = e.clientY + document.body.scrollTop + document.documentElement.scrollTop;
+        }
+
+        // Assign x and y values of the target equal to the x and y position of the cursor
+        target.x = posX;
+        target.y = posY;
+    }
+
+    function scrollCheck() {
+        // If canvas is not in view port then disable animation
+        if (document.body.scrollTop > height) {
+            animateHeader = false;
+        }
+        // otherwise enable animation
+        else {
+            animateHeader = true;
+        }
+    }
+
+    function resize() {
+        width = window.innerWidth;
+        height = window.innerHeight;
+        largeHeader.style.height = height + 'px';
+        canvas.width = width;
+        canvas.height = height;
+    }
+
+
+    /*
+     * Other
+     */
+
+    // get the distance between two points using the distance formula
+    function getDistance(p1, p2) {
+        // return Math.sqrt(Math.pow(p1.x - p2.x, 2) + Math.pow(p1.y - p2.y, 2));
+        return Math.pow(p1.x - p2.x, 2) + Math.pow(p1.y - p2.y, 2);
+    }
+
+
+})();
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html class="no-js">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+    
+        <style type="text/css">
+            /*
+                Basic reset
+            */
+            html, body, div, span, applet, object, iframe,
+            h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+            a, abbr, acronym, address, big, cite, code,
+            del, dfn, em, img, ins, kbd, q, s, samp,
+            small, strike, strong, sub, sup, tt, var,
+            b, u, i, center,
+            dl, dt, dd, ol, ul, li,
+            fieldset, form, label, legend,
+            table, caption, tbody, tfoot, thead, tr, th, td,
+            article, aside, canvas, details, embed, 
+            figure, figcaption, footer, header, hgroup, 
+            menu, nav, output, ruby, section, summary,
+            time, mark, audio, video {
+                margin: 0;
+                padding: 0;
+                border: 0;
+                font-size: 100%;
+                font: inherit;
+                vertical-align: baseline;
+            }
+            /* HTML5 display-role reset for older browsers */
+            article, aside, details, figcaption, figure, 
+            footer, header, hgroup, menu, nav, section {
+                display: block;
+            }
+            body {
+                line-height: 1;
+                font-family: Helvetica, sans-serif;
+            }
+            ol, ul {
+                list-style: none;
+            }
+            blockquote, q {
+                quotes: none;
+            }
+            blockquote:before, blockquote:after,
+            q:before, q:after {
+                content: '';
+                content: none;
+            }
+            table {
+                border-collapse: collapse;
+                border-spacing: 0;
+            }
+            
+            /*
+                CUSTOM STYLES
+            */
+            
+            #holder{
+                width: 900px;
+                margin: 0 auto;
+            }
+            
+            .content{
+                margin-top: 100px;
+            }
+            
+            
+        </style>
+        
+        <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+        <script src="http://code.jquery.com/jquery-migrate-1.1.0.js"></script>
+        <script>!window.jQuery && document.write('<script src="js/jquery-1.9.1.js"><\/script>')</script>
+        <script src="http://modernizr.com/downloads/modernizr-latest.js"></script>
+        <script language="Javascript" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.19.1/plugins/ScrollToPlugin.min.js"></script>
+        <script language="Javascript" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.19.1/TweenMax.min.js"></script>
+                
+        <script type="text/javascript">     
+
+            /*
+                Author  : Chrysto Panayotov
+                Date    : 2/28/13
+            */
+
+            $(function(){
+                
+                var $window = $(window);
+                var isTweening = false;
+                
+                document.onmousewheel = function(){ customScroll(); }
+                if(document.addEventListener){
+                    document.addEventListener('DOMMouseScroll', customScroll, false);
+                }
+                 
+                function customScroll(event){
+                   
+                   var delta = 0;
+                   
+                   if (!event){
+                       event = window.event;
+                   }
+                   
+                   if (event.wheelDelta) {
+                       delta = event.wheelDelta/120;
+                   } else if(event.detail) {
+                       delta = -event.detail/3;
+                   }
+                   
+                   if (delta){
+                        
+                        //console.log(isTweening);
+                        
+                        //if(!isTweening){
+                            
+                            //isTweening = true;
+                            
+                            var scrollTop = $window.scrollTop();
+                            var finScroll = scrollTop - parseInt(delta*100) * 3;
+                           
+                            //console.log(finScroll);
+                                                               
+                            TweenMax.to($window, 1, {
+                                scrollTo : { y: finScroll, autoKill:true },
+                                ease: Power4.easeOut,
+                                autoKill: true,
+                                overwrite: 5,
+                                onComplete: function(){ 
+                                    //console.log(isTweening);
+                                    //isTweening = false; 
+                                }
+                            });
+                       
+                       //}
+                   }
+                   
+                   if (event.preventDefault){
+                       event.preventDefault();
+                   }
+                   
+                   event.returnValue = false;
+                                        
+                }
+                
+            });
+
+        </script>
+        
+    </head>
+    <body>
+        
+        <div id="holder">
+            
+            <div class="content">
+                <h1>Smooth scrolling with mousewheel using <a href="http://www.greensock.com/gsap-js/">TweenMax</a></h1>
+                <h2>Author: Chrysto Panayotov ( burnandbass[at]gmail[dot]com )</h2>
+            </div>
+            
+            <p class="content">Pinterest cupidatat placeat, voluptate organic scenester retro polaroid officia put a bird on it squid shoreditch synth four loko trust fund. Pickled fanny pack +1 stumptown truffaut flexitarian cardigan, mlkshk pop-up before they sold out elit vice consectetur iphone. Sriracha semiotics do marfa terry richardson, quinoa qui enim cillum etsy laboris iphone sint jean shorts. American apparel swag tumblr id, irure cosby sweater shoreditch ethical excepteur sunt elit hella eu sartorial leggings. Hoodie umami nostrud accusamus. Incididunt direct trade consectetur, beard consequat fanny pack occaecat squid mollit in terry richardson voluptate ut. Chambray cupidatat fanny pack, twee aliqua messenger bag high life ad in.</p>
+            
+            <p class="content">Pinterest cupidatat placeat, voluptate organic scenester retro polaroid officia put a bird on it squid shoreditch synth four loko trust fund. Pickled fanny pack +1 stumptown truffaut flexitarian cardigan, mlkshk pop-up before they sold out elit vice consectetur iphone. Sriracha semiotics do marfa terry richardson, quinoa qui enim cillum etsy laboris iphone sint jean shorts. American apparel swag tumblr id, irure cosby sweater shoreditch ethical excepteur sunt elit hella eu sartorial leggings. Hoodie umami nostrud accusamus. Incididunt direct trade consectetur, beard consequat fanny pack occaecat squid mollit in terry richardson voluptate ut. Chambray cupidatat fanny pack, twee aliqua messenger bag high life ad in.</p>
+            
+            <p class="content">Pinterest cupidatat placeat, voluptate organic scenester retro polaroid officia put a bird on it squid shoreditch synth four loko trust fund. Pickled fanny pack +1 stumptown truffaut flexitarian cardigan, mlkshk pop-up before they sold out elit vice consectetur iphone. Sriracha semiotics do marfa terry richardson, quinoa qui enim cillum etsy laboris iphone sint jean shorts. American apparel swag tumblr id, irure cosby sweater shoreditch ethical excepteur sunt elit hella eu sartorial leggings. Hoodie umami nostrud accusamus. Incididunt direct trade consectetur, beard consequat fanny pack occaecat squid mollit in terry richardson voluptate ut. Chambray cupidatat fanny pack, twee aliqua messenger bag high life ad in.</p>
+            
+            <p class="content">Pinterest cupidatat placeat, voluptate organic scenester retro polaroid officia put a bird on it squid shoreditch synth four loko trust fund. Pickled fanny pack +1 stumptown truffaut flexitarian cardigan, mlkshk pop-up before they sold out elit vice consectetur iphone. Sriracha semiotics do marfa terry richardson, quinoa qui enim cillum etsy laboris iphone sint jean shorts. American apparel swag tumblr id, irure cosby sweater shoreditch ethical excepteur sunt elit hella eu sartorial leggings. Hoodie umami nostrud accusamus. Incididunt direct trade consectetur, beard consequat fanny pack occaecat squid mollit in terry richardson voluptate ut. Chambray cupidatat fanny pack, twee aliqua messenger bag high life ad in.</p>
+            
+            <p class="content">Pinterest cupidatat placeat, voluptate organic scenester retro polaroid officia put a bird on it squid shoreditch synth four loko trust fund. Pickled fanny pack +1 stumptown truffaut flexitarian cardigan, mlkshk pop-up before they sold out elit vice consectetur iphone. Sriracha semiotics do marfa terry richardson, quinoa qui enim cillum etsy laboris iphone sint jean shorts. American apparel swag tumblr id, irure cosby sweater shoreditch ethical excepteur sunt elit hella eu sartorial leggings. Hoodie umami nostrud accusamus. Incididunt direct trade consectetur, beard consequat fanny pack occaecat squid mollit in terry richardson voluptate ut. Chambray cupidatat fanny pack, twee aliqua messenger bag high life ad in.</p>
+            
+            <p class="content">Pinterest cupidatat placeat, voluptate organic scenester retro polaroid officia put a bird on it squid shoreditch synth four loko trust fund. Pickled fanny pack +1 stumptown truffaut flexitarian cardigan, mlkshk pop-up before they sold out elit vice consectetur iphone. Sriracha semiotics do marfa terry richardson, quinoa qui enim cillum etsy laboris iphone sint jean shorts. American apparel swag tumblr id, irure cosby sweater shoreditch ethical excepteur sunt elit hella eu sartorial leggings. Hoodie umami nostrud accusamus. Incididunt direct trade consectetur, beard consequat fanny pack occaecat squid mollit in terry richardson voluptate ut. Chambray cupidatat fanny pack, twee aliqua messenger bag high life ad in.</p>
+            
+            <p class="content">Pinterest cupidatat placeat, voluptate organic scenester retro polaroid officia put a bird on it squid shoreditch synth four loko trust fund. Pickled fanny pack +1 stumptown truffaut flexitarian cardigan, mlkshk pop-up before they sold out elit vice consectetur iphone. Sriracha semiotics do marfa terry richardson, quinoa qui enim cillum etsy laboris iphone sint jean shorts. American apparel swag tumblr id, irure cosby sweater shoreditch ethical excepteur sunt elit hella eu sartorial leggings. Hoodie umami nostrud accusamus. Incididunt direct trade consectetur, beard consequat fanny pack occaecat squid mollit in terry richardson voluptate ut. Chambray cupidatat fanny pack, twee aliqua messenger bag high life ad in.</p>
+            
+            <p class="content">Pinterest cupidatat placeat, voluptate organic scenester retro polaroid officia put a bird on it squid shoreditch synth four loko trust fund. Pickled fanny pack +1 stumptown truffaut flexitarian cardigan, mlkshk pop-up before they sold out elit vice consectetur iphone. Sriracha semiotics do marfa terry richardson, quinoa qui enim cillum etsy laboris iphone sint jean shorts. American apparel swag tumblr id, irure cosby sweater shoreditch ethical excepteur sunt elit hella eu sartorial leggings. Hoodie umami nostrud accusamus. Incididunt direct trade consectetur, beard consequat fanny pack occaecat squid mollit in terry richardson voluptate ut. Chambray cupidatat fanny pack, twee aliqua messenger bag high life ad in.</p>
+            
+            <p class="content">Pinterest cupidatat placeat, voluptate organic scenester retro polaroid officia put a bird on it squid shoreditch synth four loko trust fund. Pickled fanny pack +1 stumptown truffaut flexitarian cardigan, mlkshk pop-up before they sold out elit vice consectetur iphone. Sriracha semiotics do marfa terry richardson, quinoa qui enim cillum etsy laboris iphone sint jean shorts. American apparel swag tumblr id, irure cosby sweater shoreditch ethical excepteur sunt elit hella eu sartorial leggings. Hoodie umami nostrud accusamus. Incididunt direct trade consectetur, beard consequat fanny pack occaecat squid mollit in terry richardson voluptate ut. Chambray cupidatat fanny pack, twee aliqua messenger bag high life ad in.</p>
+            
+            <p class="content">Pinterest cupidatat placeat, voluptate organic scenester retro polaroid officia put a bird on it squid shoreditch synth four loko trust fund. Pickled fanny pack +1 stumptown truffaut flexitarian cardigan, mlkshk pop-up before they sold out elit vice consectetur iphone. Sriracha semiotics do marfa terry richardson, quinoa qui enim cillum etsy laboris iphone sint jean shorts. American apparel swag tumblr id, irure cosby sweater shoreditch ethical excepteur sunt elit hella eu sartorial leggings. Hoodie umami nostrud accusamus. Incididunt direct trade consectetur, beard consequat fanny pack occaecat squid mollit in terry richardson voluptate ut. Chambray cupidatat fanny pack, twee aliqua messenger bag high life ad in.</p>
+            
+            <p class="content">Pinterest cupidatat placeat, voluptate organic scenester retro polaroid officia put a bird on it squid shoreditch synth four loko trust fund. Pickled fanny pack +1 stumptown truffaut flexitarian cardigan, mlkshk pop-up before they sold out elit vice consectetur iphone. Sriracha semiotics do marfa terry richardson, quinoa qui enim cillum etsy laboris iphone sint jean shorts. American apparel swag tumblr id, irure cosby sweater shoreditch ethical excepteur sunt elit hella eu sartorial leggings. Hoodie umami nostrud accusamus. Incididunt direct trade consectetur, beard consequat fanny pack occaecat squid mollit in terry richardson voluptate ut. Chambray cupidatat fanny pack, twee aliqua messenger bag high life ad in.</p>
+            
+            <p class="content">Pinterest cupidatat placeat, voluptate organic scenester retro polaroid officia put a bird on it squid shoreditch synth four loko trust fund. Pickled fanny pack +1 stumptown truffaut flexitarian cardigan, mlkshk pop-up before they sold out elit vice consectetur iphone. Sriracha semiotics do marfa terry richardson, quinoa qui enim cillum etsy laboris iphone sint jean shorts. American apparel swag tumblr id, irure cosby sweater shoreditch ethical excepteur sunt elit hella eu sartorial leggings. Hoodie umami nostrud accusamus. Incididunt direct trade consectetur, beard consequat fanny pack occaecat squid mollit in terry richardson voluptate ut. Chambray cupidatat fanny pack, twee aliqua messenger bag high life ad in.</p>
+            
+        </div>
+        
+    </body>
+</html>

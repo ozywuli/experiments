@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+<body>
+
+<!-- http://stackoverflow.com/questions/8751020/how-to-get-a-pixels-x-y-coordinate-color-from-an-image -->
+
+<!-- Learn about this code on MDN: https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Pixel_manipulation_with_canvas -->
+<!-- <canvas id="canvas" width="600" height="527" style="float:left"></canvas> -->
+
+
+<canvas id="canvas" width="400" height="100" style="float:left"></canvas>
+
+<div id="color" style="width:200px;height:50px;float:left"></div>
+
+
+<div class="container" style="position: relative; clear: both;">
+    <canvas id="anotherCanvas" width="400" height="400" style="background-color: black;"></canvas>
+    <canvas id="ballCanvas" width="400" height="400" style="background: transparent; position: absolute; top: 0; left: 0"></canvas>    
+</div>
+
+
+
+
+<script>
+
+var anotherCanvas = document.getElementById('anotherCanvas');
+var anotherCtx = anotherCanvas.getContext('2d');
+
+anotherCtx.fillStyle = 'red';
+anotherCtx.fillRect(10, 10, 1, 1);
+
+var anotherPixel = anotherCtx.getImageData(0, 0, 400, 400);
+var anotherData = anotherPixel.data;
+console.log(anotherData);
+
+var anotherPosition;
+var anotherPositions = [];
+
+for (var i = 0; i < anotherData.length; i += 4 ) {
+    if ( anotherData[i-4] === 255 ) {
+        console.log('red');
+        anotherPosition = {
+            x: (i-4) / 4 / 400,
+            y: (i-4) / 4 / 400
+        }
+
+        anotherPositions.push(anotherPosition);
+    }
+}
+
+console.log(anotherPositions);
+
+var ballCanvas = document.getElementById('ballCanvas')
+var ballCtx = ballCanvas.getContext('2d');
+
+var ballPos = {
+    x: 400,
+    y: 400
+}
+
+
+function drawBall(x, y) {
+    ballCtx.beginPath();
+    ballCtx.arc(x, y, 10, 0, Math.PI * 2);
+    ballCtx.fillStyle = 'green';
+    ballCtx.fill();
+    ballCtx.closePath();
+}
+
+drawBall(ballPos.x, ballPos.y);
+
+// http://stackoverflow.com/questions/9762877/html5-js-how-to-animate-straight-line-between-two-coordinates
+var amount = 0
+// window.setInterval(function() {
+    // amount += 0.001;
+    // ballCtx.clearRect(0, 0, 400, 400);
+    // drawBall(ballPos.x + (anotherPosition.x - ballPos.x) * amount, ballPos.y + (anotherPosition.y - ballPos.y) * amount);
+    // console.log(ballPos.x + (anotherPosition.x - ballPos.x) * amount);
+
+// }, 10)
+
+function animator() {
+    amount += 0.01;
+    ballCtx.clearRect(0, 0, 400, 400);
+    drawBall(ballPos.x + (anotherPosition.x - ballPos.x) * amount, ballPos.y + (anotherPosition.y - ballPos.y) * amount);
+}
+
+
+ballCanvas.addEventListener('click', function() {
+    var callCount = 1;
+    var repeater = setInterval(function() {
+        if (callCount < 10) {
+            animator();
+            callCount += 1;
+        } else {
+            clearInterval(repeater);
+        }
+    }, 10)
+}, false);
+
+
+
+/*
+var img = new Image();
+img.src = 'rhino.png';
+var canvas = document.getElementById('canvas');
+var ctx = canvas.getContext('2d');
+img.onload = function() {
+  ctx.drawImage(img, 0, 0);
+  img.style.display = 'none';
+};
+var color = document.getElementById('color');
+function pick(event) {
+  var x = event.layerX;
+  var y = event.layerY;
+  var pixel = ctx.getImageData(x, y, 1, 1);
+  var data = pixel.data;
+  var rgba = 'rgba(' + data[0] + ', ' + data[1] +
+             ', ' + data[2] + ', ' + (data[3] / 255) + ')';
+  color.style.background =  rgba;
+  color.textContent = rgba;
+}
+canvas.addEventListener('mousemove', pick);
+*/
+
+var canvas = document.getElementById('canvas');
+var ctx = canvas.getContext('2d');
+
+// var img = new Image();
+// img.src = 'rhino.png';
+// img.onload = function() {
+//     ctx.drawImage(img, 0, 0);
+//     img.style.display = 'none';
+// }
+
+ctx.fillStyle = '#00FF00';
+ctx.font = '70px Arial';
+ctx.fillText('Hello World', 0, 70);
+
+var color = document.getElementById('color');
+
+function pick(event) {
+    var x = event.layerX;
+    var y = event.layerY;
+
+    var pixel = ctx.getImageData(x, y, 1, 1);
+    var data = pixel.data;
+    var rgba = 'rgba(' + data[0] + ', ' + data[1] + ', ' + data[2] + ', ' + (data[3] / 255) + ')';
+
+    color.style.background = rgba;
+    color.textContent = rgba;
+
+    // console.log(x / 4 % 600);
+
+    // console.log(pixel.data.length);
+
+    // for (var i = 0, n = pixel.length; i < n; i += 4) {
+    //     console.log(pixel[i+3])
+    // }
+
+
+    // console.log(pixel);
+    // console.log(data);
+    // console.log(rgba);
+
+}
+
+canvas.addEventListener('click', pick);
+
+
+
+var pixel = ctx.getImageData(0, 0, 400, 100);
+var data = pixel.data;
+
+// console.log(data);
+
+// console.log(data.length);
+
+var positions = [];
+var position;
+
+
+// console.log(data);
+// console.log(data[2]);
+
+for (var i = 0; i < data.length; i = i + 4 ) {
+
+    // console.log(1);
+    if (data[i-3] === 255) {
+        // console.log(1);
+        // console.log(data[i-3]);
+        position = {
+            x: (i-3) / 4 % 400,
+            y: (i-3) / 4 / 400
+        }
+        positions.push(position);
+    }
+    
+}
+
+// console.log(positions);
+
+// console.log(data.length);
+
+</script>
+
+</body>
+</html>

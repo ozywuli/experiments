@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta canvasHeightarset="UTF-8">
+    <title>Document</title>
+
+<style>
+body {
+    background: #000;
+    overflow: hidden;
+}
+
+canvas {
+    bottom: 0;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+#c1 {
+    opacity: 0;
+}
+
+#c2 {
+    background: #000;
+}
+</style>
+
+</head>
+
+<body>
+
+<canvas id="c1"></canvas>
+<canvas id="c2"></canvas>
+
+<script>
+
+var c1 = document.getElementById( 'c1' );
+var ctx1 = c1.getContext( '2d' );
+var c2 = document.getElementById( 'c2' );
+var ctx2 = c2.getContext( '2d' );
+var twopi = Math.PI * 2;
+var parts = [];
+var sizeBase;
+var canvasWidth;
+var opt;
+var hue;
+var count;
+
+function rand( min, max ) {
+    return Math.random() * ( max - min ) + min;
+}
+
+function hsla( h, s, l, a ) {
+    return 'hsla(' + h + ',' + s + '%,' + l + '%,' + a + ')';
+    // return 'hsla(255, 50%, 10%, 0.8)';
+}
+    
+/**
+ * Generate the backgroound dots
+ */
+function create() {
+    /**
+     * Settings
+     */
+    // the area of the canvas
+    sizeBase = canvasWidth + canvasHeight;
+    // how many background circles we want
+    count = Math.floor( sizeBase * 0.3 );
+    // the color of the circle
+    hue = rand( 0, 360 );
+
+    /**
+     * Options
+     */
+    opt = {
+        radiusMin: 1,
+        radiusMax: sizeBase * 0.04,
+        blurMin: 10,
+        blurMax: sizeBase * 0.04,
+        hueMin: hue,
+        hueMax: hue + 100,
+        saturationMin: 10,
+        saturationMax: 70,
+        lightnessMin: 20,
+        lightnessMax: 50,
+        alphaMin: 0.1,
+        alphaMax: 0.5
+    }
+
+    // Clear the rectangle before repaint
+    ctx1.clearRect( 0, 0, canvasWidth, canvasHeight );
+
+    // Choose what happens when shapes overlap (in this case lighten the intersecting shapes)
+    ctx1.globalCompositeOperation = 'lighten';
+
+    // generate as many circles as the `count`
+    while( count-- ) {
+
+        /**
+         * dot appearance settings
+         */
+
+        var radius = rand( opt.radiusMin, opt.radiusMax );
+        var blur = rand( opt.blurMin, opt.blurMax );
+
+        var x = rand( 0, canvasWidth );
+        var y = rand( 0, canvasHeight );
+        
+        // color
+        var hue = rand(opt.hueMin, opt.hueMax );
+        var saturation = rand( opt.saturationMin, opt.saturationMax );
+        var lightness = rand(  opt.lightnessMin, opt.lightnessMax );
+        var alpha = rand( opt.alphaMin, opt.alphaMax );
+
+        // draw the dots
+        ctx1.shadowColor = hsla( hue, saturation, lightness, alpha );
+        ctx1.shadowBlur = blur;
+        ctx1.beginPath();
+        ctx1.arc( x, y, radius, 0, twopi );
+        ctx1.closePath();
+        ctx1.fill();
+    }
+    
+    // draw animated dots
+    parts.length = 0;
+    // choose the number of animated dots
+    for( var i = 0; i < Math.floor( ( canvasWidth + canvasHeight ) * 0.03 ); i++ ) {
+        parts.push({
+            radius: rand( 1, sizeBase * 0.03 ),
+            x: rand( 0, canvasWidth ),
+            y: rand( 0, canvasHeight ),
+            angle: rand( 0, twopi ),
+            vel: rand( 0.1, 0.5 ),
+            tick: rand( 0, 10000 )
+        });
+    }
+
+
+
+console.log(parts);
+
+} // end create();
+
+
+
+
+/**
+ * Animate animated dots
+ */
+function loop() {
+    requestAnimationFrame( loop );
+    
+    // clear the rect before repaint
+    ctx2.clearRect( 0, 0, canvasWidth, canvasHeight );
+
+    // animated dots should be over static dots
+    ctx2.globalCompositeOperation = 'source-over';
+    ctx2.shadowBlur = 0;
+
+    // draw static dots
+/*    ctx2.drawImage( c1, 0, 0 );
+    ctx2.globalCompositeOperation = 'lighter';*/
+    
+    // the number of animated dots
+    var i = parts.length;
+
+    ctx2.shadowBlur = 15;
+    ctx2.shadowColor = '#fff';
+
+    while( i-- ) {
+        var part = parts[ i ];
+        
+        // position of animated dots
+        part.x += Math.cos( part.angle ) * part.vel;
+        part.y += Math.sin( part.angle ) * part.vel;
+        part.angle += rand( -0.05, 0.05 );
+        
+        ctx2.beginPath();
+        ctx2.arc( part.x, part.y, part.radius, 0, twopi );
+        ctx2.fillStyle = hsla( 0, 0, 100, 0.075 + Math.cos( part.tick * 0.02 ) * 0.05 );
+        ctx2.fill();
+        
+        if( part.x - part.radius > canvasWidth ) { 
+            part.x = -part.radius 
+        }
+        if( part.x + part.radius < 0 )  { 
+            part.x = canvasWidth + part.radius 
+        }
+        if( part.y - part.radius > canvasHeight ) { 
+            part.y = -part.radius 
+        }
+        if( part.y + part.radius < 0 )  { 
+            part.y = canvasHeight + part.radius 
+        }
+        
+        part.tick++;
+    }
+}
+
+/**
+ * Event Listeners
+ */
+
+function resize() {
+    canvasWidth = c1.width = c2.width = window.innerWidth,
+    canvasHeight = c1.height = c2.height = window.innerHeight;
+    create();
+}
+
+// function click() {
+//     create()
+// }
+
+window.addEventListener( 'resize', resize );
+// window.addEventListener( 'click', click );
+
+
+/**
+ * Init
+ */
+function init() {
+    resize();
+    create();
+    loop();
+}
+
+init();
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+
+<style>
+body { 
+  margin: 0; 
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #ddd;
+}
+
+canvas { 
+  width: 100%; 
+  height: 100%;
+}
+
+.label {
+  position: absolute;
+  width: 100%;
+  text-align: center;
+  top: 0;
+  color: #fff;
+}
+</style>
+</head>
+<body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r79/three.min.js"></script>
+
+<script>
+var scene = new THREE.Scene();
+var camera = new THREE.PerspectiveCamera( 30, window.innerWidth / window.innerHeight, 0.1, 1000 );
+var mesh;
+
+var renderer = new THREE.WebGLRenderer({
+    alpha: true
+});
+
+renderer.setSize( window.innerWidth, window.innerHeight );
+document.body.appendChild( renderer.domElement );
+
+var geometry = new THREE.SphereGeometry(24, 32, 32);
+THREE.ImageUtils.crossOrigin = true;
+var textureLoader = new THREE.TextureLoader();
+textureLoader.crossOrigin = true;
+textureLoader.load('https://s3-us-west-2.amazonaws.com/s.cdpn.io/53148/chrispizza.png', function(texture) {
+    texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+    texture.repeat.set( 2, 2);
+    var material = new THREE.MeshLambertMaterial({
+        map: texture
+    });
+    mesh = new THREE.Mesh( geometry, material );
+    scene.add( mesh );
+    render();
+})
+
+camera.position.z = 100;
+
+var light = new THREE.DirectionalLight( 0xffffff, 1 );
+light.position.set( 0, 1, 0 );
+scene.add( light );
+
+var light = new THREE.DirectionalLight( 0xffffff, 0.5 );
+light.position.set( 0, -1, 0 );
+scene.add( light );
+
+var light = new THREE.DirectionalLight( 0xffffff, 1 );
+light.position.set( 1, 0, 0 );
+scene.add( light );
+
+var light = new THREE.DirectionalLight( 0xffffff, 0.5 );
+light.position.set( 0, 0, 1 );
+scene.add( light );
+
+var light = new THREE.DirectionalLight( 0xffffff, 1 );
+light.position.set( 0, 0, -1 );
+scene.add( light );
+
+var light = new THREE.DirectionalLight( 0xffffff, 0.5 );
+light.position.set( -1, 0, 0 );
+scene.add( light );
+
+var render = function() {
+    requestAnimationFrame( render );
+    mesh.rotation.x += 0.01;
+    renderer.render( scene, camera );
+}
+
+</script>
+
+</body>
+</html>

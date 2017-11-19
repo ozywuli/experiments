@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+
+<canvas id="canvas" width="1000" height="1000"></canvas>
+
+
+<script>
+
+var canvas = document.getElementById('canvas');
+var ctx = canvas.getContext('2d');
+
+var gradient = ctx.createLinearGradient(0, 10, 400, 0);
+gradient.addColorStop(0, 'red');
+gradient.addColorStop(1, 'white');
+ctx.fillStyle = gradient;
+ctx.fillRect(10, 10, 400, 100);
+
+</script>
+
+</body>
+</html>

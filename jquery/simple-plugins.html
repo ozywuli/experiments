@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Simple Plugins</title>
+
+<style>
+    .my-div {
+        width: 300px;
+        height: 100px;
+    }
+</style>
+</head>
+<body>
+
+
+<a href="http://hello.com" class="link">hello</a>
+
+<a href="https://nba.com" class="link">NBA</a>
+
+
+<div class="my-div"></div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+<script>
+
+(function($) {
+    $.fn.greenify = function( options ) {
+        var settings = $.extend({
+            color: '#556b2f',
+            backgroundColor: 'white'
+        }, options);
+
+        return this.css({
+            color: settings.color,
+            backgroundColor: settings.backgroundColor
+        });
+    }
+
+}( jQuery ));
+
+
+
+$('a').greenify({
+    color: 'orange'
+});
+
+
+(function($) {
+    $.fn.showLinkLocation = function() {
+        // this.filter('a').each(function() {
+            // var link = $(this);
+            // link.append('(' + link.attr('href') + ')');
+        // });
+
+        this.filter('a').append(function() {
+            return '(' + this.href + ')';
+        });
+
+        return this;
+    }
+}(jQuery));
+
+$('a').showLinkLocation();
+
+
+
+(function($) {
+
+    $.fn.hilight = function( options ) {
+        var opts = $.extend( {}, $.fn.hilight.defaults, options );
+    };
+
+    $.fn.hilight.defaults = {
+        foreground: 'red',
+        background: 'yellow'
+    }
+
+}( jQuery ));
+
+$('.my-div').hilight();
+
+</script>
+
+</body>
+</html>

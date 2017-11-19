@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+}
+
+#canvas {
+/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#6a7482+0,5f6975+10,525b66+21,424b51+35,2d3638+57,1b2026+84 */
+background: #6a7482; /* Old browsers */
+background: -moz-radial-gradient(center, ellipse cover,  #6a7482 0%, #5f6975 10%, #525b66 21%, #424b51 35%, #2d3638 57%, #1b2026 84%); /* FF3.6-15 */
+background: -webkit-radial-gradient(center, ellipse cover,  #6a7482 0%,#5f6975 10%,#525b66 21%,#424b51 35%,#2d3638 57%,#1b2026 84%); /* Chrome10-25,Safari5.1-6 */
+background: radial-gradient(ellipse at center,  #6a7482 0%,#5f6975 10%,#525b66 21%,#424b51 35%,#2d3638 57%,#1b2026 84%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#6a7482', endColorstr='#1b2026',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+
+}
+</style>
+
+</head>
+<body>
+
+<canvas id="canvas"></canvas>
+
+<script>
+
+
+(function() {
+
+/**
+ * Declare Variables
+ */
+
+var canvas = document.getElementById('canvas');
+var canvasWidth = canvas.width = window.innerWidth;
+var canvasHeight = canvas.height = window.innerHeight;
+var ctx = canvas.getContext('2d');
+var twopi = Math.PI * 2;
+var parts = [];
+var blurredDots = [];
+
+/**
+ * Utilities
+ */
+function rand(min, max) {
+    return Math.random() * (max - min) + min;
+}
+function hsla(h, s, l, a) {
+    return 'hsla(' + h + ',' + s + '%,' + l + '%,' + a + ')';
+}
+
+
+function create() {
+    console.log('creating');
+
+    parts.length = 0;
+    for (var i = 0; i < Math.floor( (canvasWidth + canvasHeight) * 0.015 ); i++) {
+        parts.push({
+            radius: rand(1, 3),
+            x: rand(0, canvasWidth),
+            y: rand(0, canvasHeight),
+            angle: rand(0, twopi),
+            vel: rand(0.1, 0.5),
+            tick: rand(0, 10000)
+        });
+    }
+
+    blurredDots.length = 0;
+    for (var i = 0; i < 20; i++) {
+        blurredDots.push({
+            radius: rand(5, 20),
+            x: rand(0, canvasWidth),
+            y: rand(0, canvasHeight),
+            angle: rand(0, twopi),
+            vel: rand(0.1, 0.2),
+        });
+    }
+
+}
+
+
+function loop() {
+    requestAnimationFrame(loop);
+
+    ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+    ctx.globalCompositeOperation = 'source-over';
+    ctx.shadowBlur = 0;
+    ctx.shadowColor = '#FFF';
+
+    var i = parts.length;
+
+    while (i--) {
+        var part = parts[i];
+        part.x += Math.cos(part.angle) * part.vel;
+        part.y += Math.sin(part.angle) * part.vel;
+        part.angle += rand(-0.05, 0.05);
+
+        ctx.beginPath();
+        ctx.arc(part.x, part.y, part.radius, 0, twopi);
+        // ctx.fillStyle = hsla(360, 100, 100, 1);
+        ctx.fillStyle = hsla( 360, 100, 100, 0.9 );
+        ctx.fill();
+
+        if( part.x - part.radius > canvasWidth ) { 
+            part.x = -part.radius 
+        }
+        if( part.x + part.radius < 0 )  { 
+            part.x = canvasWidth + part.radius 
+        }
+        if( part.y - part.radius > canvasHeight ) { 
+            part.y = -part.radius 
+        }
+        if( part.y + part.radius < 0 )  { 
+            part.y = canvasHeight + part.radius 
+        }
+        
+        part.tick++;
+    }
+
+    var j = blurredDots.length;
+
+    while ( j-- ) {
+        var blurredDot = blurredDots[j];
+        blurredDot.x += Math.cos(blurredDot.angle) * blurredDot.vel;
+        blurredDot.y += Math.sin(blurredDot.angle) * blurredDot.vel;
+        blurredDot.angle += rand(-0.05, 0.05);
+
+        var radgrad = ctx.createRadialGradient(blurredDot.x + blurredDot.radius, blurredDot.y + blurredDot.radius, 0, blurredDot.x + blurredDot.radius, blurredDot.y + blurredDot.radius, blurredDot.radius);
+        radgrad.addColorStop(0, 'rgba(43, 84, 88, 0.15)');
+        radgrad.addColorStop(0.6, 'rgba(43, 84, 88, 0.04)');
+        radgrad.addColorStop(0.8, 'rgba(43, 84, 88, 0.02)');
+        radgrad.addColorStop(1, 'rgba(43, 84, 88, 0)');
+
+
+        // draw shape
+        ctx.fillStyle = radgrad;
+        ctx.fillRect(blurredDot.x, blurredDot.y, 60, 60);
+
+
+        if( blurredDot.x - blurredDot.radius > canvasWidth ) { 
+            blurredDot.x = -blurredDot.radius 
+        }
+        if( blurredDot.x + blurredDot.radius < 0 )  { 
+            blurredDot.x = canvasWidth + blurredDot.radius 
+        }
+        if( blurredDot.y - blurredDot.radius > canvasHeight ) { 
+            blurredDot.y = -blurredDot.radius 
+        }
+        if( blurredDot.y + blurredDot.radius < 0 )  { 
+            blurredDot.y = canvasHeight + blurredDot.radius 
+        }
+        
+
+
+    }
+
+
+
+}
+
+
+
+/**
+ * Event Listeners
+ */
+function resize() {
+    var canvasWidth = canvas.width = window.innerWidth;
+    var canvasHeight = canvas.height = window.innerHeight;
+    create();
+}
+
+window.addEventListener('resize', resize);
+
+/**
+ * Init
+ */
+function init() {
+    resize();
+    create();
+    loop();
+}
+init();
+
+
+})();
+
+</script>
+
+</body>
+</html>

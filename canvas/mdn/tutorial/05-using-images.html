@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+}
+
+</style>
+
+</head>
+<body>
+
+
+<canvas id="canvas1" width="180" height="150"></canvas>
+<canvas id="canvas2" width="150" height="150"></canvas>
+<canvas id="canvas3" width="150" height="150"></canvas>
+<div style="display:none;">
+<img id="source" src="https://mdn.mozillademos.org/files/5397/rhino.jpg" width="300" height="227">
+<img id="frame" src="https://mdn.mozillademos.org/files/242/Canvas_picture_frame.png" width="132" height="150">
+</div>
+
+
+
+<script>
+
+function draw1() {
+  var ctx = document.getElementById('canvas1').getContext('2d');
+  var img = new Image();
+  img.onload = function() {
+    ctx.drawImage(img, 0, 0);
+    ctx.beginPath();
+    ctx.moveTo(30, 96);
+    ctx.lineTo(70, 66);
+    ctx.lineTo(103, 76);
+    ctx.lineTo(150, 55);
+    ctx.stroke();
+  };
+  img.src = 'https://mdn.mozillademos.org/files/5395/backdrop.png';
+}
+draw1();
+
+
+function draw2() {
+    var ctx = document.getElementById('canvas2').getContext('2d');
+    var img = new Image();
+    img.onload = function() {
+        for (var i = 0; i < 4; i++) {
+            for (var j = 0; j < 3; j++) {
+                ctx.drawImage(img, j * 50, i * 38, 50, 38);
+            }
+        }
+    }
+    img.src = 'https://mdn.mozillademos.org/files/5397/rhino.jpg';
+}
+draw2();
+
+function draw3() {
+    var canvas = document.getElementById('canvas3');
+    var ctx = canvas.getContext('2d');
+
+    console.log(3);
+
+    var img = new Image();
+    img.src = 'https://mdn.mozillademos.org/files/5395/backdrop.png';
+
+
+      img.onload = function() {
+        // Draw slice
+        ctx.drawImage(document.getElementById('source'),
+                33, 71, 104, 124, 21, 20, 87, 104);
+
+        // Draw frame
+        ctx.drawImage(document.getElementById('frame'), 0, 0);
+      };
+
+
+}
+
+draw3();
+
+
+
+</script>
+    
+</body>
+</html>

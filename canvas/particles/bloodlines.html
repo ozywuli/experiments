@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+
+<style>
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    background: #000;
+}
+
+#img {
+    display: none;
+}
+
+</style>
+
+</head>
+<body>
+
+<canvas id="canvas" height="1000" width="1000"></canvas>
+
+<img src="http://placehold.it/150x150" alt="" id="img">
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.19.0/TweenMax.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.19.0/easing/EasePack.min.js"></script>
+
+<script>
+
+window.onload = function() {
+
+
+var canvas = document.getElementById('canvas');
+var ctx = canvas.getContext('2d');
+
+
+
+
+// Red Dot 1
+var redDot1 = {
+    x: 550,
+    y: 300
+}
+var redDotDefault = {
+    x: 550,
+    y: 300
+}
+
+// Red Dot 2
+var redDot2 = {
+    x: redDot1.x - 90,
+    y: redDot1.y + 100
+}
+
+// Red Dot 3
+var redDot3 = {
+    x: 380,
+    y: 550
+}
+
+// Red Dot 4
+var redDot4 = {
+    x: 370,
+    y: 650
+}
+
+// Red Dot 5
+var redDot5 = {
+    x: 480,
+    y: 530
+}
+
+// Red Dot 6
+var redDot6 = {
+    x: 500,
+    y: 670
+}
+
+
+/**
+ * Draw Function
+ */
+function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    /**
+     * Draw Image
+     */
+    ctx.globalCompositeOperation='destination-over';
+    ctx.drawImage(document.getElementById('img'), 200, 20);
+    ctx.drawImage(document.getElementById('img'), 700, 20);
+
+    /**
+     * Faded Lines
+     */
+
+    // Line Connecting Images
+    ctx.beginPath();
+    ctx.moveTo(275, 40);
+    ctx.lineTo(775, 60);
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+    ctx.stroke();
+
+
+    /**
+     * Red Lines
+     */
+
+    // Red Line 1
+    ctx.beginPath();
+    ctx.moveTo(350, 42);
+    ctx.lineTo(redDot1.x, redDot1.y);
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = 'red';
+    ctx.stroke();
+
+    // Red Line 2
+    ctx.beginPath();
+    ctx.moveTo(700, 60)
+    ctx.lineTo(redDot1.x, redDot1.y);
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = 'red';
+    ctx.stroke();
+
+    // Red Line 3
+    ctx.beginPath();
+    ctx.moveTo(redDot1.x, redDot1.y)
+    ctx.lineTo(redDot2.x, redDot2.y);
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = 'red';
+    ctx.stroke();
+
+    // Red Line 4
+    ctx.beginPath();
+    ctx.moveTo(redDot2.x, redDot2.y)
+    ctx.lineTo(redDot3.x, redDot3.y);
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = 'red';
+    ctx.stroke();
+
+    // Red Line 5
+    ctx.beginPath();
+    ctx.moveTo(redDot3.x, redDot3.y)
+    ctx.lineTo(redDot4.x, redDot4.y);
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = 'red';
+    ctx.stroke();
+
+    // Red Line 6
+    ctx.beginPath();
+    ctx.moveTo(redDot2.x, redDot2.y)
+    ctx.lineTo(redDot5.x, redDot5.y);
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = 'red';
+    ctx.stroke();
+
+    // Red Line 7
+    ctx.beginPath();
+    ctx.moveTo(redDot5.x, redDot5.y)
+    ctx.lineTo(redDot6.x, redDot6.y);
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = 'red';
+    ctx.stroke();
+
+    /**
+     * Red Dots
+     */
+
+    // Red Dot 1
+    ctx.beginPath();
+    ctx.arc(redDot1.x, redDot1.y, 5, Math.PI * 2, false);
+    ctx.fillStyle = 'red';
+    ctx.fill();
+
+    // Red Dot 2
+    ctx.beginPath();
+    ctx.arc(redDot2.x, redDot2.y, 5, Math.PI * 2, false);
+    ctx.fillStyle = 'red';
+    ctx.fill();
+
+    // Red Dot 3
+    ctx.beginPath();
+    ctx.arc(redDot3.x, redDot3.y, 5, Math.PI * 2, false);
+    ctx.fillStyle = 'red';
+    ctx.fill();
+
+    // Red Dot 4
+    ctx.beginPath();
+    ctx.arc(redDot4.x, redDot4.y, 5, Math.PI * 2, false);
+    ctx.fillStyle = 'red';
+    ctx.fill();
+
+    // Red Dot 5
+    ctx.beginPath();
+    ctx.arc(redDot5.x, redDot5.y, 5, Math.PI * 2, false);
+    ctx.fillStyle = 'red';
+    ctx.fill();
+
+    // Red Dot 6
+    ctx.beginPath();
+    ctx.arc(redDot6.x, redDot6.y, 5, Math.PI * 2, false);
+    ctx.fillStyle = 'red';
+    ctx.fill();
+
+}
+
+draw();
+
+
+
+
+
+window.setInterval(function() {
+
+
+    var randoX = redDotDefault.x + Math.floor(Math.random() * 15);
+    var randoY = redDotDefault.y + Math.floor(Math.random() * 15);
+
+    var randoX2 = redDotDefault.x + Math.floor(Math.random() * 15);
+    var randoY2 = redDotDefault.y + Math.floor(Math.random() * 15);
+
+    TweenMax.to(
+        redDot1,
+        1,
+        {
+            x: randoX,
+            y: randoY,
+            onUpdate: draw
+        }
+    )
+
+    TweenMax.to(
+        redDot2,
+        0.25,
+        {
+            x: randoX2 - 90,
+            y: randoY2 + 100,
+            onUpdate: draw
+        }
+    )
+
+}, 250)
+
+
+
+
+} // end document.ready
+
+
+
+
+
+
+</script>
+
+
+</body>
+</html>

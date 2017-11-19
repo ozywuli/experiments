@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+
+
+<canvas id="canvas" width="800" height="600"></canvas>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.19.0/TweenMax.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.19.0/easing/EasePack.min.js"></script>
+
+<script>
+
+var canvas = document.getElementById('canvas');
+var ctx = canvas.getContext('2d');
+
+
+var bubble = {
+    x: 100,
+    y: 100
+}
+
+var angle = 0;
+var x = 0;
+var y = 0;
+
+
+function draw() {
+
+    ctx.clearRect(0, 0, 800, 600);
+
+    ctx.beginPath();
+    ctx.moveTo(100, 100);
+    ctx.lineTo(50, 200);
+    ctx.lineWidth = 1;
+    ctx.strokeStyle = 'red';
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.arc(50, 200, 5, Math.PI * 2, false);
+    ctx.fillStyle = 'purple';
+    ctx.fill();
+
+    ctx.beginPath();
+    ctx.moveTo(100, 100)
+    ctx.lineTo(150, 200);
+    ctx.lineWidth = 1;
+    ctx.strokeStyle = 'red';
+    ctx.stroke();
+
+
+    ctx.beginPath();
+    ctx.arc(150, 200, 5, Math.PI * 2, false);
+    ctx.fillStyle = 'purple';
+    ctx.fill();
+
+
+    ctx.beginPath();
+    ctx.arc(bubble.x, bubble.y, 5, Math.PI * 2, false);
+    ctx.fillStyle = 'purple';
+    ctx.fill();
+
+
+
+    x = 100 + 10 * Math.cos(angle * Math.PI / 180);
+    y = 100 + 10 * Math.sin(angle * Math.PI / 180);
+
+    angle++;
+    if ( angle > 360 ) {
+        angle = 0;
+    }
+
+    TweenMax.to(
+    bubble,
+    0.1,
+        {
+            x: x,
+            y: y,
+            onUpdate: draw
+        }
+    )
+
+
+}
+
+
+
+
+
+
+
+window.requestAnimationFrame(draw);
+
+</script>
+
+
+</body>
+</html>

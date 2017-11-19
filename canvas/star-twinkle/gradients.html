@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Star Twinkle - Gradient</title>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+    }
+    html, body {
+        background: #000019;
+        width: 100%;
+        height: 100%;
+    }
+
+    .canvas {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+    }
+</style>
+
+</head>
+<body>
+
+<!-- http://victorblog.com/html5-canvas-gradient-creator/ -->
+<!-- https://stackoverflow.com/questions/5475755/how-to-draw-a-blurry-circle-on-html5-canvas -->
+<!-- https://stackoverflow.com/questions/3468038/html-canvas-shape-blur-filter -->
+
+<canvas id="myPrettyCanvas"></canvas>
+<canvas class="canvas"></canvas>
+
+<script type="text/javascript">
+var canvasId = 'myPrettyCanvas';
+var canvas = document.getElementById(canvasId);
+var ctx = canvas.getContext('2d');
+var grd;
+
+var canvasWidth = canvas.width = window.innerWidth;
+var canvasHeight = canvas.height = window.innerHeight;
+
+function draw(ctx) {
+    // var radgrad = ctx.createRadialGradient(60, 60, 0, 60, 60, 20);
+    // radgrad.addColorStop(0, 'rgba(255, 255, 255, 0.2)');
+    // radgrad.addColorStop(0.1, 'rgba(255, 255, 255, 0.1)');
+    // radgrad.addColorStop(0.2, 'rgba(255, 255, 255, 0.08)');
+    // radgrad.addColorStop(1, 'rgba(255, 255, 255, 0)');
+
+    // // draw shape
+    // ctx.beginPath()
+    // ctx.fillStyle = radgrad;
+    // ctx.fillRect(0,0,150,150);
+    // ctx.beginPath();
+
+
+    ctx.beginPath();
+    ctx.arc(60, 60, 4, 0, Math.PI * 2);
+    ctx.fillStyle = '#FFF';
+    ctx.fill();
+    ctx.closePath();
+}
+
+draw(ctx);
+
+canvas.style.webkitFilter = "blur(8px)";
+
+
+
+
+var otherCanvas = document.querySelector('.canvas');
+var otherCtx = otherCanvas.getContext('2d');
+
+
+var otherCanvasWidth = otherCanvas.width = window.innerWidth;
+var otherCanvasHeight = otherCanvas.height = window.innerHeight;
+
+
+otherCtx.beginPath();
+otherCtx.arc(60, 60, 2, 0, Math.PI * 2);
+otherCtx.fillStyle = '#FFF';
+otherCtx.fill();
+otherCtx.closePath();
+
+
+otherCanvas.style.webkitFilter = "blur(1px)";
+
+</script>
+
+</body>
+</html>

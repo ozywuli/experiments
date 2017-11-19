@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>PXL Logo</title>
+<style>
+* {
+    margin: 0;
+    padding: 0;
+}
+</style>
+</head>
+<body>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/84/three.min.js"></script>
+<script src="https://rawgit.com/mrdoob/three.js/master/examples/js/loaders/ColladaLoader.js"></script>
+<script src="https://rawgit.com/mrdoob/three.js/master/examples/js/controls/TrackballControls.js"></script>
+<script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/53148/OrbitControls.js"></script>
+
+
+<script>
+var scene = new THREE.Scene();
+var camera = new THREE.PerspectiveCamera( 50, window.innerWidth / window.innerHeight, 0.1, 1000 );
+
+var controls = new THREE.OrbitControls( camera );
+controls.autoRotate = true;
+
+var renderer = new THREE.WebGLRenderer();
+renderer.setSize( window.innerWidth, window.innerHeight );
+document.body.appendChild( renderer.domElement );
+
+// var geometry = new THREE.OctahedronGeometry( 30 );
+// var material = new THREE.MeshNormalMaterial();
+// var mesh = new THREE.Mesh( geometry, material );
+// scene.add( mesh );
+
+/**
+ * OBJECT LOADER
+ */
+var dae;
+var loader = new THREE.ColladaLoader();
+
+function loadCollada( collada ) {
+    dae = collada.scene;
+    dae.position.set(0.4, 0, 0.8);
+
+    dae.position.x = 0;
+    dae.position.y = 0;
+    dae.position.z = 0;
+
+    scene.add(dae);
+
+    console.log(dae);
+
+    renderPhone();
+}
+
+loader.load( 'pxl.dae', loadCollada);
+
+camera.position.z = 100;
+
+var render = function() {
+    requestAnimationFrame(render);
+    controls.update();
+    renderer.render(scene, camera);
+}
+
+render();
+</script>
+
+    
+</body>
+</html>

@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Area Limit</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+}
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.background {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('img-bg-desktop@2x.jpg');
+    background-size: cover;
+}
+
+.canvas {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1;
+}
+
+
+
+</style>
+
+</head>
+<body>
+
+<!-- https://stackoverflow.com/questions/9880279/how-do-i-add-a-simple-onclick-event-handler-to-a-canvas-element -->
+<!-- https://stackoverflow.com/questions/22496159/how-to-find-the-mousepoint-inside-the-triangle-using-html5-canvas -->
+
+<div class="background"></div>
+<canvas class="canvas"></canvas>
+<canvas class="canvas2"></canvas>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.19.0/TweenMax.min.js"></script>
+<script>
+var canvas = document.querySelector('.canvas');
+var ctx = canvas.getContext('2d');
+
+var canvas2 = document.querySelector('.canvas2');
+var ctx2 = canvas2.getContext('2d');
+
+var canvasWidth = canvas.width = canvas2.width = window.innerWidth;
+var canvasHeight = canvas.height = canvas2.height = window.innerHeight;
+
+
+function hitDetect() {
+    ctx.beginPath();
+    ctx.moveTo(canvasWidth, canvasHeight);
+    ctx.lineTo(canvasWidth, 0);
+    ctx.lineTo(0, canvasHeight);
+    ctx.fillStyle = 'transparent';
+    ctx.fill();
+    ctx.closePath();
+}
+
+hitDetect();
+
+
+function Star(id, x, y, delay, radius, speed) {
+    this.params = {
+        alpha: 0,
+        delay: delay,
+        radius: radius,
+        speed: speed,
+        id: id,
+        x: x,
+        y: y
+    }
+
+    var tl = new TimelineMax({
+        repeat: -1,
+        delay: this.params.delay
+    })
+        .to(this.params, this.params.speed, {
+            alpha: 1,
+            
+        })
+        .to(this.params, this.params.speed, {
+            alpha: 0
+        })
+}
+
+var stars = [];
+
+function Glow(id, x, y, delay, radius, speed) {
+    this.params = {
+        alpha: 0,
+        delay: delay,
+        radius: radius * 2,
+        speed: speed,
+        id: id,
+        x: x,
+        y: y
+    }
+
+    new TimelineMax({
+        repeat: -1,
+        delay: this.params.delay
+    })
+        .to(this.params, this.params.speed, {
+            alpha: 1,
+            
+        })
+        .to(this.params, this.params.speed, {
+            alpha: 0
+        })
+
+}
+
+
+var glows = [];
+
+
+for ( var i = 0; stars.length < 100; i++ ) {
+    var xCoor = Math.floor(Math.random() * canvasWidth);
+    var yCoor = Math.floor(Math.random() * canvasHeight);
+
+    var delay = Math.floor(Math.random() * 10);
+    var radius = Math.floor( (Math.random() * 5) );
+
+    var speed = 2;
+
+    console.log(delay);
+
+    if (!ctx.isPointInPath(xCoor, yCoor)) {
+        var star = new Star(i, xCoor, yCoor, delay, radius, speed);
+        stars.push(star);
+        var glow = new Glow(i, xCoor, yCoor, delay, radius, speed);
+        glows.push(glow);
+    }
+} 
+
+
+
+
+function draw() {
+    ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+    ctx2.clearRect(0, 0, canvasWidth, canvasHeight);
+    stars.forEach(function(el) {
+        ctx.beginPath();
+        ctx.arc(el.params.x, el.params.y, el.params.radius, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(255, 255, 255, ' + el.params.alpha + ')';
+        ctx.fill();
+        ctx.closePath();
+    });
+
+    glows.forEach(function(el) {
+        ctx2.beginPath();
+        ctx2.arc(el.params.x, el.params.y, el.params.radius, 0, Math.PI * 2);
+        ctx2.fillStyle = 'rgba(255, 255, 255, ' + el.params.alpha + ')';
+        ctx2.fill();
+        ctx2.closePath();
+    });
+
+    requestAnimationFrame(draw);
+}
+
+draw();
+
+canvas.style.webkitFilter = "blur(1px)";
+canvas2.style.webkitFilter = "blur(8px)";
+
+</script>
+
+</body>
+</html>

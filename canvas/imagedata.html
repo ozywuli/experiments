@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Image Data</title>
+
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+canvas {
+    background: #000;
+}
+
+</style>
+
+
+</head>
+<body>
+
+<canvas id="canvas" width="1800" height="900"></canvas>
+
+
+<script>
+
+var windowWidth = window.innerWidth;
+var windowHeight = window.innerHeight;
+
+var canvas = document.getElementById('canvas');
+var canvasCtx = canvas.getContext('2d');
+// canvas.width = windowWidth;
+// canvas.height = windowHeight;
+var canvasWidth = canvas.width;
+var canvasHeight = canvas.height;
+
+
+var tcanvas = document.createElement('canvas');
+var tctx = tcanvas.getContext('2d');
+tcanvas.width = canvasWidth;
+tcanvas.height = canvasHeight;
+
+
+
+tctx.fillStyle = "white";
+tctx.fillRect(0, 0, canvasWidth, canvasHeight)
+tctx.fill();
+tctx.font = "normal 120px Arial";
+tctx.strokeStyle = "black";
+tctx.strokeText('Hell World', 10, 205);
+
+
+var imageData = canvasCtx.getImageData(0, 0, windowWidth, windowHeight );
+var pixels = imageData.data;
+console.log(pixels.length);
+
+var positions = [];
+
+for (var i = 0; i < pixels.length; i = i + 4 ) {
+    if (pixels[i] != 255 && pixels[i+1] != 255 && pixels[i+2] != 255) {
+        position = {
+            x: 1 / 4 % windowWidth,
+            y: 1 / 4 % windowWidth
+        }
+        positions.push(position);
+    }
+}
+
+console.log(positions);
+console.log(positions.length);
+
+// console.log(imageData);
+// console.log(imageData.data);
+// console.log(imageData.data[1]);
+// console.log(imageData.data.length);
+
+</script>
+
+
+</body>
+</html>

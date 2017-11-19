@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+
+<style>
+canvas { background: #eee; }
+</style>
+
+</head>
+<body>
+<canvas id="myCanvas" width="480" height="320"></canvas>
+
+<script>
+
+var canvas = document.getElementById('myCanvas');
+var ctx = canvas.getContext('2d');
+var ballRadius = 10;
+var x = canvas.width / 2;
+var y = canvas.height - 30;
+var dx = 0.2;
+var dy = -0.2;
+
+function drawBall() {
+    ctx.beginPath();
+    ctx.arc(x, y, ballRadius, 0, Math.PI * 2);
+    ctx.fillStyle = '#0095DD';
+    ctx.fill();
+    ctx.closePath();
+}
+
+function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    drawBall();
+
+    // If half of canvas width (240) plus distance (2) is greater than canvas width (480) minus ball radius (10), that is if the ball reaches the right limits
+    // or
+    // if half of canvas width(240) plus distance (2) is less than ball radius (10), that is if the ball reaches the left limits
+    if (x + dx > canvas.width - ballRadius || x + dx < ballRadius) {
+        dx = -dx;
+    }
+
+    // console.log(dx);
+
+    // if half of canvas height (160) plus distance (2) is greater than canvas height (320) minus ball radius (1), that is if the ball reaches the lower limits
+    // or
+    // if half of canvas height (160) plus distance (2) is less than ball radius (10), that is if the ball reaches the upper limits
+    if (y + dy > canvas.height - ballRadius || y + dy < ballRadius) {
+        dy = -dy;
+    }
+
+    x += dx;
+    y += dy;
+}
+
+
+setInterval(draw, 10);
+
+
+</script>
+
+</body>
+</html>
