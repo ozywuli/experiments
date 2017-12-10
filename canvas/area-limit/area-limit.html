@@ -130,16 +130,14 @@ function Glow(id, x, y, delay, radius, speed) {
 var glows = [];
 
 
-for ( var i = 0; stars.length < 100; i++ ) {
+for ( var i = 0; stars.length < 50; i++ ) {
     var xCoor = Math.floor(Math.random() * canvasWidth);
     var yCoor = Math.floor(Math.random() * canvasHeight);
 
-    var delay = Math.floor(Math.random() * 10);
-    var radius = Math.floor( (Math.random() * 5) );
+    var delay = Math.floor(Math.random() * 10) / 0.85;
+    var radius = Math.floor( (Math.random() * 3) + 2 );
 
-    var speed = 2;
-
-    console.log(delay);
+    var speed = 1.3;
 
     if (!ctx.isPointInPath(xCoor, yCoor)) {
         var star = new Star(i, xCoor, yCoor, delay, radius, speed);
@@ -177,7 +175,7 @@ function draw() {
 draw();
 
 canvas.style.webkitFilter = "blur(1px)";
-canvas2.style.webkitFilter = "blur(8px)";
+canvas2.style.webkitFilter = "blur(10px)";
 
 </script>
 

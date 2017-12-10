@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Document</title>
+    <title>Bar Chart</title>
 </head>
 <body>
  
@@ -22,7 +22,7 @@
 
 </style>
 
-
+<!-- https://bl.ocks.org/mbostock/3885304 -->
 <svg width="960" height="500"></svg>
 
 <script src="https://d3js.org/d3.v4.min.js"></script>
@@ -55,24 +55,24 @@ d3.csv('data/letter-frequency.csv', function(d) {
         throw error;
     }
 
+    // map x data to x range
     x.domain(data.map(function(d) { return d.letter; }));
+    // map y data to y range
     y.domain([0, d3.max(data, function(d) { return d.frequency;  })]);
 
+    // append the x axis
     g.append('g')
         .attr('class', 'axis axis--x')
         .attr('transform', 'translate(0,' + height + ')')
         .call(d3.axisBottom(x));
 
+    // append the y axis
     g.append('g')
         .attr('class', 'axis axis--y')
         .call(d3.axisLeft(y).ticks(10, '%'))
-        .append('text')
-            .attr('transform', 'rotate(-90)')
-            .attr('y', 6)
-            .attr('dy', '0.71em')
-            .attr('text-anchor', 'end')
-            .text('frequency')
 
+
+    // append the bars
     g.selectAll('.bar')
         .data(data)
         .enter().append('rect')

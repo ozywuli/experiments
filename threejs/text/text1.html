@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Text 1</title>
+
+    <style>
+        body { margin: 0; }
+        canvas { width: 100%; height: 100% }
+    </style>
+</head>
+<body>
+
+<script src="../lib/three.min.js"></script>
+<script src="../lib/OrbitControls.js"></script>
+
+<script>
+
+let camera;
+let scene;
+let renderer;
+let geometry;
+let material;
+let mesh;
+
+init();
+animate();
+
+function init() {
+    camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 10000);
+    camera.position.z = 1000;
+
+    var hemiLight = new THREE.HemisphereLight(0xffffff, 0xffffff, 0.5);
+    var spotLight = new THREE.SpotLight({
+        color: 0xffffff, 
+        intensity: 0.01
+    });
+
+    spotLight.position.set(800, 800, 800);
+
+    scene = new THREE.Scene();
+    scene.add(hemiLight, spotLight);
+    renderer = new THREE.WebGLRenderer({
+        antialias: true
+    });
+
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.body.appendChild(renderer.domElement);
+
+    var loader = new THREE.FontLoader();
+
+    loader.load('https://threejs.org/examples/fonts/helvetiker_regular.typeface.json', function(font) {
+        var oTextMaterial = new THREE.MeshBasicMaterial({
+            color: 0xffffff
+        });
+        
+        var oNewTextGeometry = new THREE.TextGeometry( 'mojiblade', {
+            font: font,
+            size: 80,
+            height: 1,
+            curveSegments: 20
+        });
+
+        var oNewTextMesh = new THREE.Mesh(oNewTextGeometry, oTextMaterial);
+
+        oNewTextMesh.position.x = -200;
+
+        scene.add(oNewTextMesh);
+    });
+}
+
+function animate() {
+    requestAnimationFrame(animate);
+    renderer.render(scene, camera);
+}
+
+
+</script>
+
+</body>
+</html>

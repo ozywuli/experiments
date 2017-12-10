@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/ozywuli/experiments#readme",
   "devDependencies": {
+    "broccoli": "^1.1.4",
     "webpack": "^3.6.0"
   }
 }
